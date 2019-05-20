@@ -5,11 +5,12 @@ Fill a variable map with values from ENV vars, selected based on current environ
 ## Usage
 
 In this example, we map ENV vars in `development` and `production` environments without prefixes.
-<br>
+
 Note that `envConfig` allows for comma separated lists when accepting configuration options.
 
 For the `staging` environment, ENV variable names are expected to be prefixed with `STAGING_` where ever the `{ENV}` token is used.
-<br>This behavior is enabled through the `prefixVars: true` option on the `envConfig`.
+
+This behavior is enabled through the `prefixVars: true` option on the `envConfig`.
 
 Note that the `HOST` and `PORT` ENV variables are searched for directly, without prefix, because the `{ENV}` token is omitted.
 
@@ -24,10 +25,10 @@ const mappedEnv = mapEnvVars({
     staging: { prefixVars: true }
   },
   varLookups: {
-    baseUrl: '{ENV}_BASE_URL',
-    enableDebug: '{ENV}_ENABLE_DEBUG',
-    port: 'PORT',
-    host: 'HOST'
+    baseUrl: '{ENV}BASE_URL',
+    enableDebug: '{ENV}ENABLE_DEBUG',
+    host: 'HOST',
+    port: 'PORT'
   }
 })
 
@@ -36,7 +37,7 @@ console.log(mappedEnv)
 
 **In a `development` environment**
 
-```json
+```bash
 NODE_ENV=development BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
 
 # {
@@ -49,7 +50,7 @@ NODE_ENV=development BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost 
 
 **In a `staging` environment w/ properly prefixed variable names**
 
-```json
+```bash
 NODE_ENV=staging STAGING_BASE_URL=https://test.com STAGING_ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
 
 # {
@@ -62,7 +63,7 @@ NODE_ENV=staging STAGING_BASE_URL=https://test.com STAGING_ENABLE_DEBUG=true HOS
 
 **CLI, run in `staging` environment w/ incorrectly prefixed variable names**
 
-```json
+```bash
 NODE_ENV=staging DEV_BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
 
 # {

@@ -8,5 +8,9 @@
     "Charlie Pitkin",
     "FINE, A Brand Agency (https://wearefine.com)"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv-flow": "^0.4.0",
+    "esm": "^3.2.25"
+  }
 }

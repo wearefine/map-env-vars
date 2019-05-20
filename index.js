@@ -24,7 +24,7 @@ export default function mapEnvVars(options) {
       const prefixVars = options.envConfig[envSet].prefixVars
       for (let varName in options.varLookups) {
         let varDef = options.varLookups[varName]
-        let varKey = varDef.replace(ENV_TOKEN, prefixVars ? `${envCurrent}` : '')
+        let varKey = varDef.replace(ENV_TOKEN, prefixVars ? `${envCurrent}_` : '')
         finalVars[varName] = options.envData[varKey]
       }
     })
