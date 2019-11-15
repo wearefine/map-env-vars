@@ -74,7 +74,7 @@ mapEnvVars({
   envCurrent: 'staging',
   // required
   envConfig: {
-    'ENV_NAME[, ...]': { prefixVars: Boolean }
+    'ENV_ID': 'ENV_REPLACEMENT_'
     // ...
   },
   // required
