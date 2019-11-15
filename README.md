@@ -8,11 +8,11 @@ In this example, we map ENV vars in `development` and `production` environments 
 
 Note that `envConfig` allows for comma separated lists when accepting configuration options.
 
-For the `staging` environment, ENV variable names are expected to be prefixed with `STAGING_` where ever the `{ENV}` token is used.
+For the `staging` environment, ENV variable names are expected to be prefixed with `STAGE_` where ever the `{ENV}` token is used.
 
-This behavior is enabled through the `prefixVars: true` option on the `envConfig`.
+This behavior is enabled through the `staging` key in the `envConfig`.
 
-Note that the `HOST` and `PORT` ENV variables are searched for directly, without prefix, because the `{ENV}` token is omitted.
+Note that the `HOST` and `PORT` ENV variables are searched for directly, without prefix, because the `{ENV}` token is omitted. This behavior also occurs whenever your current execution ENV is not found as a key in the envConfig object. In these cases, the {ENV} token is ignored during lookup.
 
 **index.js**
 
@@ -21,8 +21,8 @@ import mapEnvVars from 'map-env-vars'
 
 const mappedEnv = mapEnvVars({
   envConfig: {
-    'development,production': { prefixVars: false },
-    staging: { prefixVars: true }
+    'remote_development': 'DEV_',
+    'staging': 'STAGE_'
   },
   varLookups: {
     baseUrl: '{ENV}BASE_URL',
@@ -35,7 +35,20 @@ const mappedEnv = mapEnvVars({
 console.log(mappedEnv)
 ```
 
-**In a `development` environment**
+**In a `staging` environment, w/ prefix defined in `envConfig` options, w/ properly prefixed variable names**
+
+```bash
+NODE_ENV=staging BASE_URL=https://other-test.com STAGE_BASE_URL=https://test.com STAGE_ENABLE_DEBUG=true HOST=0.0.0.0 PORT=3100 node index.js
+
+# {
+#   "baseUrl": "https://test.com",
+#   "enableDebug": "true",
+#   "host": "localhost",
+#   "port": 3000
+# }
+```
+
+**In a `development` environment (not defined in `envConfig` options)**
 
 ```bash
 NODE_ENV=development BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
@@ -46,32 +59,9 @@ NODE_ENV=development BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost 
 #   "host": "localhost",
 #   "port": 3000
 # }
-```
 
-**In a `staging` environment w/ properly prefixed variable names**
-
-```bash
-NODE_ENV=staging STAGING_BASE_URL=https://test.com STAGING_ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
-
-# {
-#   "baseUrl": "https://test.com",
-#   "enableDebug": "true",
-#   "host": "localhost",
-#   "port": 3000
-# }
-```
-
-**CLI, run in `staging` environment w/ incorrectly prefixed variable names**
-
-```bash
-NODE_ENV=staging DEV_BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
-
-# {
-#   "baseUrl": undefined,
-#   "enableDebug": undefined,
-#   "host": "localhost",
-#   "port": 3000
-# }
+# Note how {ENV} token is ignored when performing lookups. This is because the current
+# execution ENV is not found as a key in the envConfig object
 ```
 
 ## Options
