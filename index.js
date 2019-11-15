@@ -16,18 +16,23 @@ export default function mapEnvVars(options) {
 
   const envCurrent = new String(options.envCurrent).toUpperCase()
   let finalVars = {}
-  for (let envSet in options.envConfig) {
-    envSet.split(',').forEach(env => {
-      if (env.toUpperCase() !== envCurrent) {
-        return
+  for (const [finalName, sourceName] of Object.entries(options.varLookups)) {
+    // Pass var through if token replacement isn't requested
+    if (sourceName.includes(ENV_TOKEN) == false) {
+      finalVars[finalName] = options.envData[sourceName]
+    } else {
+      // If token replacement is requested, check for envCurrent config
+      let finalReplacement = ''
+      for (const [sourceEnv, replacement] of Object.entries(options.envConfig)) {
+        // Ignore if env mismatch or token is falsey
+        if (sourceEnv.toUpperCase() == envCurrent) {
+          finalReplacement = replacement
+        }
       }
-      const prefixVars = options.envConfig[envSet].prefixVars
-      for (let varName in options.varLookups) {
-        let varDef = options.varLookups[varName]
-        let varKey = varDef.replace(ENV_TOKEN, prefixVars ? `${envCurrent}_` : '')
-        finalVars[varName] = options.envData[varKey]
-      }
-    })
+      // Map final var from prefixed source
+      const lookupKey = sourceName.replace(ENV_TOKEN, finalReplacement)
+      finalVars[finalName] = options.envData[lookupKey]
+    }
   }
 
   return finalVars

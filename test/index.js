@@ -2,17 +2,19 @@ import assert from 'assert'
 import mapEnvVars from '../index'
 
 const mockEnvData = {
-  BASE_URL: 'https://prod-site.com',
-  ENABLE_DEBUG: 'false',
   HOST: 'localhost',
   PORT: 3000,
-  STAGING_BASE_URL: 'https://staging-site.com',
-  STAGING_ENABLE_DEBUG: 'true'
+  BASE_URL: 'http://prod-site.com',
+  ENABLE_DEBUG: 'false',
+  DEV_BASE_URL: 'http://dev-site.com',
+  DEV_ENABLE_DEBUG: 'true',
+  STAGE_BASE_URL: 'https://staging-site.com',
+  STAGE_ENABLE_DEBUG: 'true'
 }
 
 const envConfig = {
-  'development, production': { prefixVars: false },
-  staging: { prefixVars: true }
+  'staging': 'STAGE_',
+  'remote_development': 'DEV_'
 }
 
 const varLookups = {
@@ -25,13 +27,20 @@ const varLookups = {
 
 const developmentMappedEnv = mapEnvVars({
   // By default, envData is mapped to `process.env`
-  // Here, the evnData value is overridden for illustration purposes
+  // Here, the envData value is overridden for illustration purposes
   envData: mockEnvData,
   // By default, envCurrent is mapped to `process.env.NODE_ENV`
   // Here, it is mapped to a value to aid in testing
   envCurrent: 'development',
   // These options are typically defined inline, but for testing purposes
   // they are set above and reused below
+  envConfig,
+  varLookups
+})
+
+const remoteDevMappedEnv = mapEnvVars({
+  envData: mockEnvData,
+  envCurrent: 'remote_development',
   envConfig,
   varLookups
 })
@@ -43,17 +52,36 @@ const stagingMappedEnv = mapEnvVars({
   varLookups
 })
 
+const prodMappedEnv = mapEnvVars({
+  envData: mockEnvData,
+  envCurrent: 'production',
+  envConfig,
+  varLookups
+})
+
 // Development env assertions
-assert.strictEqual(developmentMappedEnv.baseUrl, 'https://prod-site.com')
+assert.strictEqual(developmentMappedEnv.baseUrl, 'http://prod-site.com')
 assert.strictEqual(developmentMappedEnv.enableDebug, 'false')
 assert.strictEqual(developmentMappedEnv.host, 'localhost')
 assert.strictEqual(developmentMappedEnv.port, 3000)
+
+// Remote development env assertions
+assert.strictEqual(remoteDevMappedEnv.baseUrl, 'http://dev-site.com')
+assert.strictEqual(remoteDevMappedEnv.enableDebug, 'true')
+assert.strictEqual(remoteDevMappedEnv.host, 'localhost')
+assert.strictEqual(remoteDevMappedEnv.port, 3000)
 
 // Staging env assertions
 assert.strictEqual(stagingMappedEnv.baseUrl, 'https://staging-site.com')
 assert.strictEqual(stagingMappedEnv.enableDebug, 'true')
 assert.strictEqual(stagingMappedEnv.host, 'localhost')
 assert.strictEqual(stagingMappedEnv.port, 3000)
+
+// Prod env assertions
+assert.strictEqual(prodMappedEnv.baseUrl, 'http://prod-site.com')
+assert.strictEqual(prodMappedEnv.enableDebug, 'false')
+assert.strictEqual(prodMappedEnv.host, 'localhost')
+assert.strictEqual(prodMappedEnv.port, 3000)
 
 // Undefined env assertions
 assert.strictEqual(stagingMappedEnv.missingVar, undefined)
