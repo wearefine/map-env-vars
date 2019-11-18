@@ -2,6 +2,10 @@
 
 Fill a variable map with values from ENV vars, selected based on current environment.
 
+## Installation
+
+1. `yarn add map-env-vars` or `npm i map-env-vars`
+
 ## Usage
 
 In this example, we map ENV vars in `development` and `production` environments without prefixes.
