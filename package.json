@@ -1,8 +1,12 @@
 {
   "name": "map-env-vars",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fill a variable map with values from ENV vars, selected based on current environment",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wearefine/map-env-vars.git"
+  },
   "author": "FINE, A Brand Agency (https://wearefine.com)",
   "contributors": [
     "Aaron Ransley (https://aaronransley.com)",
