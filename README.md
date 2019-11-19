@@ -10,11 +10,9 @@ Fill a variable map with values from ENV vars, selected based on current environ
 
 In this example, we map ENV vars in `development` and `production` environments without prefixes.
 
-Note that `envConfig` allows for comma separated lists when accepting configuration options.
-
 For the `staging` environment, ENV variable names are expected to be prefixed with `STAGE_` where ever the `{ENV}` token is used.
 
-This behavior is enabled through the `staging` key in the `envConfig`.
+This behavior is enabled through the `staging` key-value pair in the `envConfig`.
 
 Note that the `HOST` and `PORT` ENV variables are searched for directly, without prefix, because the `{ENV}` token is omitted. This behavior also occurs whenever your current execution ENV is not found as a key in the envConfig object. In these cases, the {ENV} token is ignored during lookup.
 
