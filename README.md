@@ -1,3 +1,5 @@
+🔗 [NPM Package](https://www.npmjs.com/package/map-env-vars)
+
 # Map ENV Vars
 
 Fill a variable map with values from ENV vars, selected based on current environment.
