@@ -1,6 +1,6 @@
 {
   "name": "map-env-vars",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Fill a variable map with values from ENV vars, selected based on current environment",
   "main": "index.js",
   "repository": {
