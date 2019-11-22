@@ -9,17 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - ...
 
+## [v0.1.4] - 11-22-2019
 ## [v0.1.3] - 11-22-2019
-
-- Readme update & NPM package version bump
-
 ## [v0.1.2] - 11-19-2019
-
-- Readme update & NPM package version bump
-
 ## [v0.1.1] - 11-18-2019
 
-- Readme updates & NPM package version bump
+- Readme update & NPM package version bump
 
 ## [v0.1.0] - 11-15-2019
 
