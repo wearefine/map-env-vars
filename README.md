@@ -12,11 +12,11 @@ Fill a variable map with values from ENV vars, selected based on current environ
 
 In this example, we map ENV vars in `development` and `production` environments without prefixes.
 
-For the `staging` environment, ENV variable names are expected to be prefixed with `STAGE_` where ever the `{ENV}` token is used.
+For the `remote_development` environment, ENV variable names are expected to be prefixed with `STAGE_` where ever the `{ENV}` token is used. For the `staging` environment, ENV variable names are expected to be prefixed with `STAGE_` where ever the `{ENV}` token is used.
 
-This behavior is enabled through the `staging` key-value pair in the `envConfig`.
+This behavior is defined by the key-value pairs of `envConfig`.
 
-Note that the `HOST` and `PORT` ENV variables are searched for directly, without prefix, because the `{ENV}` token is omitted. This behavior also occurs whenever your current execution ENV is not found as a key in the envConfig object. In these cases, the {ENV} token is ignored during lookup.
+Note that the `HOST` and `PORT` ENV variables are searched for directly, without prefix, because the `{ENV}` token is omitted from their `varLookups` definition. This behavior also occurs whenever your current execution ENV is not found as a key in the envConfig object. In these cases, the {ENV} token is ignored during lookup.
 
 **index.js**
 
@@ -47,25 +47,26 @@ NODE_ENV=staging BASE_URL=https://other-test.com STAGE_BASE_URL=https://test.com
 # {
 #   "baseUrl": "https://test.com",
 #   "enableDebug": "true",
-#   "host": "localhost",
-#   "port": 3000
+#   "host": "0.0.0.0",
+#   "port": 3100
 # }
 ```
 
-**In a `development` environment (not defined in `envConfig` options)**
+**In a `qa` environment (not defined in `envConfig` options)**
 
 ```bash
-NODE_ENV=development BASE_URL=https://test.com ENABLE_DEBUG=true HOST=localhost PORT=3000 node index.js
+NODE_ENV=qa BASE_URL=https://test.com ENABLE_DEBUG=true node index.js
 
 # {
 #   "baseUrl": "https://test.com",
 #   "enableDebug": "true",
-#   "host": "localhost",
-#   "port": 3000
+#   "host": undefined,
+#   "port": undefined
 # }
 
 # Note how {ENV} token is ignored when performing lookups. This is because the current
-# execution ENV is not found as a key in the envConfig object
+# execution ENV is not found as a key in the envConfig object.
+# There are also undefined values here because some ENV values were not set during invocation.
 ```
 
 ## Options
