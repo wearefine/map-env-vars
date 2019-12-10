@@ -13,8 +13,8 @@ const mockEnvData = {
 }
 
 const envConfig = {
-  'staging': 'STAGE_',
-  'remote_development': 'DEV_'
+  staging: 'STAGE_',
+  remote_development: 'DEV_'
 }
 
 const varLookups = {
