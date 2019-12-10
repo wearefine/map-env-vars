@@ -12,7 +12,7 @@ Fill a variable map with values from ENV vars, selected based on current environ
 
 Let's examine an example:
 
-**mock.js**
+**example.js**
 
 ```js
 import mapEnvVars from 'map-env-vars'
