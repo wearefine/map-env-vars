@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- ...
+
+## [v0.2.0] - 12-11-2019
+
+- Add fallback support in scenarios where non-tokenized var is present
+  and a environment specific prefix isn't found. See `~/test/index.js`
 - Add .prettierrc
 
 ## [v0.1.5] - 12-10-2019

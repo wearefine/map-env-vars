@@ -4,10 +4,12 @@ import mapEnvVars from '../index'
 const mockEnvData = {
   HOST: 'localhost',
   PORT: 3000,
+  FALLBACK_VALUE: 'baseline',
   BASE_URL: 'http://prod-site.com',
   ENABLE_DEBUG: 'false',
   DEV_BASE_URL: 'http://dev-site.com',
   DEV_ENABLE_DEBUG: 'true',
+  DEV_FALLBACK_VALUE: 'overridden',
   STAGE_BASE_URL: 'https://staging-site.com',
   STAGE_ENABLE_DEBUG: 'true'
 }
@@ -20,7 +22,9 @@ const envConfig = {
 const varLookups = {
   baseUrl: '{ENV}BASE_URL',
   enableDebug: '{ENV}ENABLE_DEBUG',
-  missingVar: '{ENV}MISSING_VAR',
+  fallbackValue: '{ENV}FALLBACK_VALUE',
+  missingWithToken: '{ENV}MISSING_VAR',
+  missingEntirely: 'MISSING_VAR',
   host: 'HOST',
   port: 'PORT'
 }
@@ -70,21 +74,24 @@ assert.strictEqual(remoteDevMappedEnv.baseUrl, 'http://dev-site.com')
 assert.strictEqual(remoteDevMappedEnv.enableDebug, 'true')
 assert.strictEqual(remoteDevMappedEnv.host, 'localhost')
 assert.strictEqual(remoteDevMappedEnv.port, 3000)
+assert.strictEqual(remoteDevMappedEnv.fallbackValue, 'overridden')
 
 // Staging env assertions
+console.log(stagingMappedEnv)
+
 assert.strictEqual(stagingMappedEnv.baseUrl, 'https://staging-site.com')
 assert.strictEqual(stagingMappedEnv.enableDebug, 'true')
 assert.strictEqual(stagingMappedEnv.host, 'localhost')
 assert.strictEqual(stagingMappedEnv.port, 3000)
+assert.strictEqual(stagingMappedEnv.fallbackValue, 'baseline')
+assert.strictEqual(stagingMappedEnv.missingWithToken, undefined)
+assert.strictEqual(stagingMappedEnv.missingEntirely, undefined)
 
 // Prod env assertions
 assert.strictEqual(prodMappedEnv.baseUrl, 'http://prod-site.com')
 assert.strictEqual(prodMappedEnv.enableDebug, 'false')
 assert.strictEqual(prodMappedEnv.host, 'localhost')
 assert.strictEqual(prodMappedEnv.port, 3000)
-
-// Undefined env assertions
-assert.strictEqual(stagingMappedEnv.missingVar, undefined)
 
 // 🎉
 console.log('Tests ran successfully')

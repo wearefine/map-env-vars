@@ -32,6 +32,12 @@ export default function mapEnvVars(options) {
       // Map final var from prefixed source
       const lookupKey = sourceName.replace(ENV_TOKEN, finalReplacement)
       finalVars[finalName] = options.envData[lookupKey]
+
+      // Check for undefined and roll back to unprefixed value
+      if (!finalVars[finalName]) {
+        const baselineLookup = sourceName.replace(ENV_TOKEN, '')
+        finalVars[finalName] = options.envData[baselineLookup]
+      }
     }
   }
 
